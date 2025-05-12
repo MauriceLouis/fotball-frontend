@@ -1,7 +1,9 @@
 FROM node:22-alpine AS node-with-deps
 WORKDIR /usr/app
 
-COPY package*.json ./src  ./
+COPY package*.json ./
+COPY ./src ./src
+COPY ./public ./public
 
 RUN npm i --quiet
 
@@ -16,6 +18,7 @@ COPY --from=node-with-deps /usr/app/package*.json ./
 RUN npm ci --omit=dev --ignore-scripts
 RUN npm i -g serve
 
-COPY --from=node-with-deps /usr/app/build ./
+COPY --from=node-with-deps /usr/app/build ./build
+RUN ls -la
 
-CMD ["serve", "-s" "build"]
+CMD ["serve", "-s", "build"]
