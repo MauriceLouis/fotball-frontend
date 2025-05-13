@@ -14,11 +14,8 @@ WORKDIR /usr/app
 
 ENV NODE_ENV=production
 
-COPY --from=node-with-deps /usr/app/package*.json ./
-RUN npm ci --omit=dev --ignore-scripts
 RUN npm i -g serve
 
 COPY --from=node-with-deps /usr/app/build ./build
-RUN ls -la
 
 CMD ["serve", "-s", "build"]
